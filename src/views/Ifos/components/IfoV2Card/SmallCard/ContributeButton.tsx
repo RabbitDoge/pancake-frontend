@@ -3,27 +3,28 @@ import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
 import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getAddress } from 'utils/addressHelpers'
-import { Ifo } from 'config/constants/types'
+import { Token } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import { UserPoolCharacteristics } from 'hooks/ifo/v2/types'
+import { PoolIds } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
 
-interface ContributeProps {
-  ifo: Ifo
+interface Props {
+  poolId: PoolIds
+  currency: Token
   contract: Contract
-  userPoolCharacteristics: UserPoolCharacteristics
+  maxValue?: BigNumber
+  isPendingTx: boolean
   addUserContributedAmount: (amount: BigNumber) => void
 }
-const Contribute: React.FC<ContributeProps> = ({
-  ifo,
+const ContributeButton: React.FC<Props> = ({
+  currency,
+  poolId,
   contract,
-  userPoolCharacteristics,
+  maxValue,
+  isPendingTx,
   addUserContributedAmount,
 }) => {
-  const { currency } = ifo
-  const { isPendingTx } = userPoolCharacteristics
   const TranslateString = useI18n()
   const { toastSuccess } = useToast()
 
@@ -34,10 +35,11 @@ const Contribute: React.FC<ContributeProps> = ({
 
   const [onPresentContributeModal] = useModal(
     <ContributeModal
-      currency={currency.symbol}
+      poolId={poolId}
+      currency={currency}
       contract={contract}
-      currencyAddress={getAddress(currency.address)}
       onSuccess={handleContributeSuccess}
+      maxValue={maxValue}
     />,
     false,
   )
@@ -49,4 +51,4 @@ const Contribute: React.FC<ContributeProps> = ({
   )
 }
 
-export default Contribute
+export default ContributeButton

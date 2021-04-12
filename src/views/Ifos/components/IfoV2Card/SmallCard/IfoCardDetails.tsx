@@ -4,9 +4,8 @@ import { PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { isBinaryExpression } from 'typescript'
 
-export interface IfoCardFooterProps {
+export interface IfoCardDetailsProps {
   poolId: PoolIds
   ifo: Ifo
   publicIfoData: PublicIfoData
@@ -28,7 +27,7 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
   )
 }
 
-const IfoCardFooter: React.FC<IfoCardFooterProps> = ({ poolId, ifo, publicIfoData }) => {
+const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData }) => {
   const TranslateString = useI18n()
   const { status } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
@@ -96,4 +95,4 @@ const IfoCardFooter: React.FC<IfoCardFooterProps> = ({ poolId, ifo, publicIfoDat
   return <Box mt="24px">{renderBasedOnIfoSttatus()}</Box>
 }
 
-export default IfoCardFooter
+export default IfoCardDetails
