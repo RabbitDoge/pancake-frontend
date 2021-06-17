@@ -1,7 +1,13 @@
-import { ethers } from 'ethers'
+import Web3 from 'web3'
 import { Interface } from '@ethersproject/abi'
-import { simpleRpcProvider } from 'utils/web3'
-import { getMulticallContract } from 'utils/contractHelpers'
+import getRpcUrl from 'utils/getRpcUrl'
+import MultiCallAbi from 'config/abi/Multicall.json'
+import { getMulticallAddress } from 'utils/addressHelpers'
+
+const RPC_URL = getRpcUrl()
+
+const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 })
+const web3NoAccount = new Web3(httpProvider)
 
 interface Call {
   address: string // Address of the contract
@@ -10,14 +16,15 @@ interface Call {
 }
 
 interface MulticallOptions {
-  web3?: ethers.providers.JsonRpcProvider
+  web3?: Web3
   blockNumber?: number
   requireSuccess?: boolean
 }
 
 const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
   try {
-    const multi = getMulticallContract(options.web3 || simpleRpcProvider)
+    const web3 = options.web3 || web3NoAccount
+    const multi = new web3.eth.Contract(MultiCallAbi as any, getMulticallAddress())
     const itf = new Interface(abi)
 
     const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
@@ -37,7 +44,8 @@ const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = 
  * 2. The return inclues a boolean whether the call was successful e.g. [wasSuccessfull, callResult]
  */
 export const multicallv2 = async (abi: any[], calls: Call[], options: MulticallOptions = {}): Promise<any> => {
-  const multi = getMulticallContract(options.web3 || simpleRpcProvider)
+  const web3 = options.web3 || web3NoAccount
+  const multi = new web3.eth.Contract(MultiCallAbi as any, getMulticallAddress())
   const itf = new Interface(abi)
 
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
