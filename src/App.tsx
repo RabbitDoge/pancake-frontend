@@ -18,7 +18,7 @@ import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/red
 import Swap from './views/Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 import GlobalStyle from './style/Global'
-import Menu from './components/Menu'
+import Menu from './components/Nav/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/PageLoader'

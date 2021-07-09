@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
-import Footer from 'components/Menu/Footer'
-import SubNav from 'components/Menu/SubNav'
+import Footer from 'components/Nav/Footer'
+import SubNav from 'components/Nav/SubNav'
 
 const StyledPage = styled.div`
   display: flex;
